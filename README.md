@@ -31,6 +31,7 @@ No signup, no API key, nothing to connect.
 - [The humanizer](#the-humanizer)
 - [Design principles](#design-principles)
 - [Project structure](#project-structure)
+- [Development](#development)
 - [Author](#author)
 
 ## Features
@@ -125,6 +126,11 @@ python3 detect.py draft.txt                  # score it on five checks
 python3 detect.py before.txt after.txt       # compare before and after
 ```
 
+Both need Python 3.9 or newer and nothing else. On Windows, use `python`
+instead of `python3`. `detect.py` exits with code 0 on PASS and 1 otherwise,
+so it can gate a script or CI step. Add `--json` to either script for
+machine-readable output.
+
 ### Fixed automatically
 
 - **Invisible characters.** Zero-width spaces and joiners, word joiners, soft
@@ -215,7 +221,21 @@ skills/li-human/detect.py        the five-check scoring panel
 skills/li-profile/rubric.json    the 100-point profile rubric
 templates/voice.md               your voice profile (fill this in first)
 assets/                          logos used in this README
+tests/                           unit tests for the scripts and the skill files
 ```
+
+## Development
+
+The tests use only the Python standard library:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+They cover the cleaning passes, the scoring panel, both command-line tools
+(including on a Windows console), and checks that every skill folder has a
+valid `SKILL.md`, appears in this README, and that every JSON file parses.
+They run on Linux and Windows for each push via GitHub Actions.
 
 ## Author
 

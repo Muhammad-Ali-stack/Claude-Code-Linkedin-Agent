@@ -20,6 +20,10 @@ python3 detect.py draft.txt                    # score it, five checks
 python3 detect.py before.txt after.txt         # prove the delta
 ```
 
+Run them from this skill's folder, or pass the full path to each script. On
+Windows, use `python` (or `py`) instead of `python3`. Both need Python 3.9+ and
+nothing else.
+
 Both read `slop.json`, which is the lexicon: 100+ stock words and phrases with
 plain-English replacements, 17 invisible character classes, 11 typographic
 substitutions, and 11 structural tells. It is meant to be edited. If the user

@@ -45,6 +45,30 @@ def load_lexicon(path=LEX):
         return json.load(fh)
 
 
+def read_text(path):
+    if path == "-":
+        return sys.stdin.read()
+    with open(path, encoding="utf-8") as fh:
+        return fh.read()
+
+
+def use_utf8_io():
+    """Windows consoles default to a legacy code page and crash on an em dash."""
+    for stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
+def term_pattern(find):
+    """Match a lexicon term as a whole term, across any run of whitespace.
+
+    Lookarounds instead of \\b, so terms that end in punctuation
+    ("what are your thoughts?") still match.
+    """
+    body = r"\s+".join(re.escape(part) for part in find.split())
+    return re.compile(r"(?<!\w)" + body + r"(?!\w)", re.IGNORECASE)
+
+
 def _cp(spec):
     """'U+200B' -> '\\u200b';  'U+E0000-U+E007F' -> (start, end)."""
     if "-" in spec:
@@ -79,11 +103,10 @@ def pass_invisible(text, lex):
             pattern = "[" + re.escape(chr(cp[0])) + "-" + re.escape(chr(cp[1])) + "]"
         else:
             pattern = re.escape(chr(cp))
-        n = len(re.findall(pattern, text))
+        text, n = re.subn(pattern, "" if entry["action"] == "delete" else " ", text)
         if n:
             hits.append({"name": entry["cp"] + " " + entry["name"], "count": n,
                          "action": entry["action"]})
-            text = re.sub(pattern, "" if entry["action"] == "delete" else " ", text)
     # Any remaining Cf (format) character is invisible by definition.
     stray = [c for c in text if unicodedata.category(c) == "Cf"]
     if stray:
@@ -132,15 +155,12 @@ def pass_lexical(text, lex):
     entries = sorted(lex["phrases"] + lex["words"],
                      key=lambda e: len(e["find"]), reverse=True)
     for entry in entries:
-        find = entry["find"]
-        pattern = re.compile(r"\b" + re.escape(find).replace(r"\ ", r"\s+") + r"\b",
-                             re.IGNORECASE)
-        found = pattern.findall(text)
-        if not found:
-            continue
-        hits.append({"find": find, "replace": entry["replace"] or "(deleted)",
-                     "count": len(found), "family": entry["family"]})
-        text = pattern.sub(lambda m: _match_case(m.group(0), entry["replace"]), text)
+        repl = entry["replace"]
+        text, n = term_pattern(entry["find"]).subn(
+            lambda m: _match_case(m.group(0), repl), text)
+        if n:
+            hits.append({"find": entry["find"], "replace": repl or "(deleted)",
+                         "count": n, "family": entry["family"]})
     # Clean up after deletions.
     text = re.sub(r"[ \t]{2,}", " ", text)
     text = re.sub(r"(?m)^[ \t]*([,.;:])\s*", "", text)
@@ -235,9 +255,13 @@ def main():
     ap.add_argument("--json", action="store_true", help="emit {text, report} as JSON")
     ap.add_argument("--lexicon", default=LEX, help="path to slop.json")
     args = ap.parse_args()
+    use_utf8_io()
 
-    raw = sys.stdin.read() if args.input == "-" else open(args.input, encoding="utf-8").read()
-    lex = load_lexicon(args.lexicon)
+    try:
+        raw = read_text(args.input)
+        lex = load_lexicon(args.lexicon)
+    except (OSError, ValueError) as err:
+        sys.exit(f"humanize.py: {err}")
     clean, report = humanize(raw, lex)
 
     if args.json:

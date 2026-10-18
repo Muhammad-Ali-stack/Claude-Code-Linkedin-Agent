@@ -40,6 +40,26 @@ NUMBERS = re.compile(r"\b\d[\d,.]*%?\b|\$\d")
 PROPER = re.compile(r"(?<![.!?]\s)(?<!^)\b[A-Z][a-z]{2,}\b", re.MULTILINE)
 
 
+def read_text(path):
+    if path == "-":
+        return sys.stdin.read()
+    with open(path, encoding="utf-8") as fh:
+        return fh.read()
+
+
+def use_utf8_io():
+    """Windows consoles default to a legacy code page and crash on an em dash."""
+    for stream in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
+def term_pattern(find):
+    """Whole-term match across any whitespace. Same rule as humanize.py."""
+    body = r"\s+".join(re.escape(part) for part in find.split())
+    return re.compile(r"(?<!\w)" + body + r"(?!\w)", re.IGNORECASE)
+
+
 def clamp(n):
     return max(0.0, min(100.0, n))
 
@@ -89,9 +109,7 @@ def check_slop(text, lex):
         return 50.0, "empty"
     hits, found = 0, []
     for entry in lex["words"] + lex["phrases"]:
-        pattern = re.compile(r"\b" + re.escape(entry["find"]).replace(r"\ ", r"\s+") + r"\b",
-                             re.IGNORECASE)
-        n = len(pattern.findall(text))
+        n = len(term_pattern(entry["find"]).findall(text))
         if n:
             hits += n
             found.append(entry["find"])
@@ -197,17 +215,21 @@ def main():
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--lexicon", default=LEX)
     args = ap.parse_args()
+    use_utf8_io()
 
-    lex = json.load(open(args.lexicon, encoding="utf-8"))
-    read = lambda p: sys.stdin.read() if p == "-" else open(p, encoding="utf-8").read()
+    try:
+        with open(args.lexicon, encoding="utf-8") as fh:
+            lex = json.load(fh)
+        targets = [(args.input, read_text(args.input))]
+        if args.compare:
+            targets.append((args.compare, read_text(args.compare)))
+    except (OSError, ValueError) as err:
+        sys.exit(f"detect.py: {err}")
 
-    targets = [(args.input, read(args.input))]
-    if args.compare:
-        targets.append((args.compare, read(args.compare)))
-
-    payload = []
+    scored, payload = [], []
     for name, text in targets:
         results, overall, verdict = run(text, lex)
+        scored.append((name, results, overall, verdict))
         payload.append({
             "source": name,
             "checks": {k: {"score": round(v[0], 1), "detail": v[1]} for k, v in results.items()},
@@ -219,8 +241,7 @@ def main():
         print(json.dumps(payload if args.compare else payload[0], indent=2))
         return
 
-    for (name, text), p in zip(targets, payload):
-        results, overall, verdict = run(text, lex)
+    for name, results, overall, verdict in scored:
         render(results, overall, verdict, label=os.path.basename(name) if args.compare else None)
     if args.compare:
         a, b = payload
