@@ -1,9 +1,22 @@
-# LinkedIn Agent Skill
+<p align="center">
+  <img src="assets/linkedin.svg" alt="LinkedIn" width="64" height="64">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/claude-code.svg" alt="Claude Code" width="64" height="64">
+</p>
 
-Twelve Claude skills that run a LinkedIn account: posts, comments, replies,
+<h1 align="center">LinkedIn Agent Skill</h1>
+
+<p align="center">
+  <a href="https://claude.com/claude-code"><img src="https://img.shields.io/badge/Claude_Code-skills-D97757?logo=claude&logoColor=white" alt="Claude Code skills"></a>
+  <img src="https://img.shields.io/badge/LinkedIn-content_agent-0A66C2" alt="LinkedIn content agent">
+  <img src="https://img.shields.io/badge/skills-15-informational" alt="15 skills">
+  <img src="https://img.shields.io/badge/python-no_dependencies-3776AB?logo=python&logoColor=white" alt="Python, no dependencies">
+</p>
+
+Fifteen Claude skills that run a LinkedIn account: posts, comments, replies,
 profile, planning, DMs, inbox, carousels, repurposing, audits,
-recommendations, and a humanizer that strips the AI fingerprint from every
-draft.
+recommendations, newsletters, polls, job search, and a humanizer that strips
+the AI fingerprint from every draft.
 
 No signup, no API key, nothing to connect.
 
@@ -29,6 +42,10 @@ No signup, no API key, nothing to connect.
 - **A weekly plan** covering what to post, when, and who to engage with.
 - **Outreach and inbox triage**, with connection notes, follow-ups and lead sorting.
 - **Recommendations.** Write them, ask for them, and draft your own when asked.
+- **Long-form and polls.** Newsletter issues with their share post, and polls
+  built to start a real argument.
+- **Job search.** Tailor to a posting, message the hiring manager, and track
+  every application.
 - **A humanizer that runs locally.** Two dependency-free Python scripts clean
   each draft and score it before you see it.
 
@@ -93,6 +110,9 @@ Alternatively, paste three of your own posts into Claude and say
 | `/li-inbox` | Triages the inbox into lead / recruiter / peer / ask / spam, and flags automated sequences. |
 | `/li-audit` | A post-mortem on published posts, ranked by engagement rate and reach multiple rather than impressions. |
 | `/li-recommend` | Writes recommendations you give, the message that asks for one, and your own draft when someone says "write it yourself". |
+| `/li-newsletter` | Newsletter issues and articles: title, opener, a body built for long-form, the cover brief, and the share post. |
+| `/li-poll` | Polls with character counts, four defensible options, the post above the poll, and the follow-up once votes are in. |
+| `/li-job` | Job search: match your profile to a role, tailor to one posting, message the hiring manager, and track applications. |
 
 ## The humanizer
 
@@ -194,6 +214,7 @@ skills/li-human/humanize.py      the cleaning passes
 skills/li-human/detect.py        the five-check scoring panel
 skills/li-profile/rubric.json    the 100-point profile rubric
 templates/voice.md               your voice profile (fill this in first)
+assets/                          logos used in this README
 ```
 
 ## Author

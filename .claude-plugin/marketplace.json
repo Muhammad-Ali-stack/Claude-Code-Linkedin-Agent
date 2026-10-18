@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "linkedin-agent",
-      "description": "Twelve Claude skills that run a LinkedIn account, including a humanizer that strips the AI fingerprint and scores the draft on a five-check panel.",
+      "description": "Fifteen Claude skills that run a LinkedIn account, including a humanizer that strips the AI fingerprint and scores the draft on a five-check panel.",
       "source": "./",
       "category": "productivity",
       "homepage": "https://github.com/Muhammad-Ali-stack/Claude-Code-Linkedin-Agent"
