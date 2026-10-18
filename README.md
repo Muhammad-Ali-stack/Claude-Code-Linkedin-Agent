@@ -1,10 +1,12 @@
 <p align="center">
   <img src="assets/linkedin.svg" alt="LinkedIn" width="64" height="64">
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/claude-code.svg" alt="Claude Code" width="64" height="64">
+  &nbsp;&nbsp;&nbsp;
+  <img src="assets/claude.svg" alt="Claude" width="64" height="64">
+  &nbsp;&nbsp;&nbsp;
+  <img src="assets/claude-code.svg" alt="Claude Code" width="90" height="64">
 </p>
 
-<h1 align="center">LinkedIn Agent Skill</h1>
+<h1 align="center">LinkedIn Agent for Claude Code</h1>
 
 <p align="center">
   <a href="https://claude.com/claude-code"><img src="https://img.shields.io/badge/Claude_Code-skills-D97757?logo=claude&logoColor=white" alt="Claude Code skills"></a>
@@ -13,12 +15,13 @@
   <img src="https://img.shields.io/badge/python-no_dependencies-3776AB?logo=python&logoColor=white" alt="Python, no dependencies">
 </p>
 
-Fifteen Claude skills that run a LinkedIn account: posts, comments, replies,
+Fifteen [Claude Code](https://claude.com/claude-code) skills that run a LinkedIn account: posts, comments, replies,
 profile, planning, DMs, inbox, carousels, repurposing, audits,
 recommendations, newsletters, polls, job search, and a humanizer that strips
 the AI fingerprint from every draft.
 
-No signup, no API key, nothing to connect.
+Built for Claude Code, and also usable in the Claude app. No signup, no API
+key, nothing to connect.
 
 > **Nothing gets posted until you say yes.** These skills write. You post.
 
@@ -220,7 +223,7 @@ skills/li-human/humanize.py      the cleaning passes
 skills/li-human/detect.py        the five-check scoring panel
 skills/li-profile/rubric.json    the 100-point profile rubric
 templates/voice.md               your voice profile (fill this in first)
-assets/                          logos used in this README
+assets/                          LinkedIn, Claude and Claude Code logos used in this README
 tests/                           unit tests for the scripts and the skill files
 ```
 
