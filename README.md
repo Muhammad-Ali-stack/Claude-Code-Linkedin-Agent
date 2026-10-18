@@ -11,13 +11,14 @@
 <p align="center">
   <a href="https://claude.com/claude-code"><img src="https://img.shields.io/badge/Claude_Code-skills-D97757?logo=claude&logoColor=white" alt="Claude Code skills"></a>
   <img src="https://img.shields.io/badge/LinkedIn-content_agent-0A66C2" alt="LinkedIn content agent">
-  <img src="https://img.shields.io/badge/skills-16-informational" alt="16 skills">
+  <img src="https://img.shields.io/badge/skills-19-informational" alt="19 skills">
   <img src="https://img.shields.io/badge/python-no_dependencies-3776AB?logo=python&logoColor=white" alt="Python, no dependencies">
 </p>
 
-Sixteen [Claude Code](https://claude.com/claude-code) skills that run a LinkedIn account: posts, comments, replies,
+Nineteen [Claude Code](https://claude.com/claude-code) skills that run a LinkedIn account: posts, comments, replies,
 profile, planning, DMs, inbox, carousels, repurposing, audits,
-recommendations, newsletters, polls, job search, company pages, and a humanizer that strips
+recommendations, newsletters, polls, job search, interview prep, networking, milestone posts, company
+pages, and a humanizer that strips
 the AI fingerprint from every draft.
 
 Built for Claude Code, and also usable in the Claude app. No signup, no API
@@ -48,6 +49,8 @@ key, nothing to connect.
 - **Recommendations.** Write them, ask for them, and draft your own when asked.
 - **Long-form and polls.** Newsletter issues with their share post, and polls
   built to start a real argument.
+- **Career moments.** Announce a new job, promotion, graduation or layoff,
+  prepare for interviews, and grow a network that actually replies.
 - **Company Pages.** Page copy, page posts in a human voice, and share kits so
   your team can carry the best posts to their own networks.
 - **Job search.** Tailor to a posting, message the hiring manager, and track
@@ -119,6 +122,9 @@ Alternatively, paste three of your own posts into Claude and say
 | `/li-newsletter` | Newsletter issues and articles: title, opener, a body built for long-form, the cover brief, and the share post. |
 | `/li-poll` | Polls with character counts, four defensible options, the post above the poll, and the follow-up once votes are in. |
 | `/li-job` | Job search: match your profile to a role, tailor to one posting, message the hiring manager, and track applications. |
+| `/li-interview` | Interview prep from the job description and the interviewer's profile: likely questions, your stories, questions to ask, mock interview, thank-you note. |
+| `/li-milestone` | Personal news posts: new job, promotion, graduation, certification, leaving a job, or being laid off. |
+| `/li-network` | Grows your network on purpose: who to connect with, a 15-minute weekly routine, and keeping in touch with old contacts. |
 | `/li-company` | Company Pages: tagline and About, page posts that sound like people, share kits for your team, and a monthly page plan. |
 
 ## The humanizer
